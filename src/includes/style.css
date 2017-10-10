@@ -1,0 +1,7 @@
+.messages-container input[type=number] {
+    width: 5em;
+}
+
+.messages-container small {
+    color: #777;
+}
