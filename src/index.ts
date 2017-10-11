@@ -1,4 +1,5 @@
 import { MessageBot } from '@bhmb/bot'
+import { UIExtensionExports } from '@bhmb/ui'
 import { JoinListener, LeaveListener, TriggerListener, AnnouncementListener } from './listeners'
 import { JoinTab, LeaveTab, TriggerTab, AnnouncementTab } from './tabs'
 import css from './includes/style.css'
@@ -42,6 +43,9 @@ MessageBot.registerExtension('messages', function(ex, world) {
     if (ex.bot.getExports('ui')) {
         let style = document.head.appendChild(document.createElement('style'))
         style.innerHTML = css
+
+        let ui = ex.bot.getExports('ui') as UIExtensionExports
+        ui.addTabGroup('Messages', 'messages')
 
         let tabs = [
             new JoinTab(ex),
