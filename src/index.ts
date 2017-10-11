@@ -23,15 +23,16 @@ MessageBot.registerExtension('messages', function(ex, world) {
         if (hasLoaded) return
         hasLoaded = true
 
+        let timeout = setTimeout(() => {
+            listeners = [
+                new JoinListener(ex),
+                new LeaveListener(ex),
+                new TriggerListener(ex),
+                new AnnouncementListener(ex),
+            ]
+        }, 500)
         listeners = [{
-            remove: () => clearTimeout(setTimeout(() => {
-                listeners = [
-                    new JoinListener(ex),
-                    new LeaveListener(ex),
-                    new TriggerListener(ex),
-                    new AnnouncementListener(ex),
-                ]
-            }, 500))
+            remove: () => clearTimeout(timeout)
         }]
     }
 

@@ -1,6 +1,6 @@
 {
   "name": "@bhmb/messages",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "description": "An extension which provides basic messaging functionality",
   "main": "index.js",
   "repository": "https://github.com/Blockheads-MessageBot/Messages-Extension",
