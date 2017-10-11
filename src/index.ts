@@ -59,6 +59,7 @@ MessageBot.registerExtension('messages', function(ex, world) {
         listeners = listeners.concat(
             ...tabs,
             { remove: () => style.remove() },
+            { remove: () => ui.removeTabGroup('messages') }
         )
     }
 })
