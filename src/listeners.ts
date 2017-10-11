@@ -61,6 +61,7 @@ export class TriggerListener extends RemovableMessageHelper<MessageConfig & { tr
     }
 
     listener = ({ player, message }: { player: Player, message: string }) => {
+        if (player.name == 'SERVER') return
         let responses = 0
         for (let msg of this.messages) {
             let checks = [
