@@ -69,7 +69,7 @@ export class TriggerListener extends RemovableMessageHelper<MessageConfig & { tr
                 checkGroups(player, msg),
                 this.triggerMatches(message, msg.trigger)
             ]
-            if (checks.every(Boolean) && responses++ <= this.ex.storage.get('maxResponses', 3)) {
+            if (checks.every(Boolean) && ++responses <= this.ex.storage.get('maxResponses', 3)) {
                 this.ex.bot.send(msg.message, { name: player.name })
             }
         }
