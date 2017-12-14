@@ -5,7 +5,7 @@ export default {
     input: 'src/index.ts',
     output: {
         file: 'index.js',
-        format: 'umd',
+        format: 'es',
     },
     plugins: [
         typescript(),
