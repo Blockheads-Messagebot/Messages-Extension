@@ -43,7 +43,7 @@ export abstract class MessagesTab<T> extends RemovableMessageHelper<T> {
         super(id, ex)
         this.ui = ex.bot.getExports('ui') as UIExtensionExports
         this.ex = ex
-        this.tab = this.ui.addTab(name)
+        this.tab = this.ui.addTab(name, 'messages')
     }
 
     setup = async () => {

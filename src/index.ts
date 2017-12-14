@@ -14,7 +14,7 @@ export interface MessageConfig {
     not_group: MessageGroupType
 }
 
-MessageBot.registerExtension('@bhmb/messages', function(ex, world) {
+MessageBot.registerExtension('messages', function(ex, world) {
     let listeners: {remove: () => void}[] = []
     ex.remove = () => listeners.forEach(l => l.remove())
 
