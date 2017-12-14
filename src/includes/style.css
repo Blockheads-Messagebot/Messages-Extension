@@ -1,7 +1,48 @@
 .messages-container input[type=number] {
     width: 5em;
+    font-size: 0.6rem;
 }
 
-.messages-container small {
-    color: #777;
+.messages-container {
+    border-top: 1px solid #cccccc;
+    padding-top: 1em;
+}
+
+.messages-container .box {
+    padding: 0.7em;
+    padding-bottom: 0;
+    margin-bottom: 1em;
+}
+
+.messages-container .columns {
+    margin-bottom: 0;
+}
+
+.messages-container .drag::after {
+    content: " \2261";
+}
+
+.messages-container .level-options {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+@media screen and (max-width: 768px) {
+    .messages-container .level-options {
+        flex-wrap: wrap;
+    }
+}
+
+.messages-container summary {
+    outline: none;
+}
+
+.is-adding-message {
+    position: fixed;
+    left: 1em;
+    z-index: 10;
+}
+
+.messages-container p {
+    margin-right: 0.5em;
 }

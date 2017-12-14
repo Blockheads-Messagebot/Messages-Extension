@@ -1,19 +1,19 @@
 {
   "name": "@bhmb/messages",
-  "version": "1.0.6",
-  "description": "An extension which provides basic messaging functionality",
+  "version": "1.0.7",
+  "description": "A Blockheads-MessageBot extension which provides basic messaging functionality",
   "main": "index.js",
   "repository": "https://github.com/Blockheads-MessageBot/Messages-Extension",
   "author": "Bibliofile <Bibliofilegit@gmail.com>",
   "license": "GPL-3.0+",
   "devDependencies": {
-    "@bhmb/bot": "^7.0.0-a8",
-    "@bhmb/ui": "^1.0.0-a5",
-    "rollup": "^0.50.0",
+    "@bhmb/bot": "^7.0.9",
+    "@bhmb/ui": "^1.0.6",
+    "rollup": "^0.52.1",
     "rollup-plugin-string": "^2.0.2",
-    "rollup-plugin-typescript2": "^0.7.0",
-    "tslint": "^5.7.0",
-    "typescript": "^2.5.3"
+    "rollup-plugin-typescript2": "^0.8.4",
+    "tslint": "^5.8.0",
+    "typescript": "^2.6.2"
   },
   "scripts": {
     "build": "rollup --config",

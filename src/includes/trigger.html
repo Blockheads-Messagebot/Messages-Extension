@@ -1,50 +1,77 @@
 <template>
-    <div class="column is-4-desktop is-6-tablet">
-        <div class="box">
-            <label>Trigger:
-                <input class="input" data-target="trigger">
-            </label>
-            <label>Message:
-                <textarea class="textarea is-fluid" data-target="message"></textarea>
-            </label>
-            <details>
-                <summary>More options
-                    <small class="summary"></small>
-                </summary>
-                <label>Player is:
-                    <select data-target="group">
-                        <option value="all">anyone</option>
-                        <option value="staff">a staff member</option>
-                        <option value="mod">a mod</option>
-                        <option value="admin">an admin</option>
-                        <option value="owner">the owner</option>
-                    </select>
-                </label>
-                <br>
-                <label>Player is not:
-                    <select data-target="not_group">
-                        <option value="nobody">nobody</option>
-                        <option value="staff">a staff member</option>
-                        <option value="mod">a mod</option>
-                        <option value="admin">an admin</option>
-                        <option value="owner">the owner</option>
-                    </select>
-                </label>
-                <br>
-                <input type="number" value="0" data-target="joins_low">
-                <span> &le; player joins &le; </span>
-                <input type="number" value="9999" data-target="joins_high">
-            </details>
-            <a>Delete</a>
+    <div class="box">
+        <div class="columns">
+            <div class="column is-narrow is-hidden-touch">
+                <span class="drag"></span>
+            </div>
+            <div class="column is-narrow">
+                <p class="has-text-weight-bold">Trigger</p>
+            </div>
+            <div class="column is-2-desktop">
+                <input class="input is-small" data-target="trigger">
+            </div>
+            <div class="column is-narrow">
+                <p class="has-text-weight-bold">Message</p>
+            </div>
+            <div class="column">
+                <textarea class="textarea is-small is-fluid" data-target="message"></textarea>
+            </div>
+            <div class="column is-3">
+                <details>
+                    <summary>More options</summary>
+                    <div class="level-options">
+                        <p class="has-text-weight-bold">Player is </p>
+                        <div class="control">
+                            <select data-target="group" class="select is-small">
+                                <option value="all">anyone</option>
+                                <option value="staff">a staff member</option>
+                                <option value="mod">a mod</option>
+                                <option value="admin">an admin</option>
+                                <option value="owner">the owner</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="level-options">
+                        <p class="has-text-weight-bold">Player is not </p>
+                        <div class="control">
+                            <select data-target="not_group" class="select is-small">
+                                <option value="nobody">nobody</option>
+                                <option value="staff">a staff member</option>
+                                <option value="mod">a mod</option>
+                                <option value="admin">an admin</option>
+                                <option value="owner">the owner</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="level-options">
+                        <div class="control">
+                            <input type="number" class="input is-small" value="0" data-target="joins_low" min="0">
+                            <span class="has-text-weight-bold"> &le; player joins &le; </span>
+                            <input type="number" class="input is-small" value="9999" data-target="joins_high">
+                        </div>
+                    </div>
+                </details>
+            </div>
+            <div class="column is-narrow">
+                <button class="button is-small is-danger is-outlined" data-do="delete">Delete</button>
+            </div>
         </div>
     </div>
 </template>
-<div class="container is-fluid">
+
+<div class="container is-widescreen">
     <section class="section is-small">
-        <span class="button is-primary is-pulled-right">+</span>
-        <h3 class="title is-4">These are checked whenever someone says something.</h3>
-        <span>You can use {{Name}}, {{NAME}}, {{name}}, and {{ip}} in your message. If you put an asterisk (*) in your trigger,
-            it will be treated as a wildcard. (Trigger "te*st" will match "tea stuff" and "test")</span>
+        <span class="button is-primary is-adding-message" title="Add trigger message">+</span>
+        <h3 class="title is-4">Triggers</h3>
+        <ul>
+            <li>The trigger will be checked against chat messages, if it matches, the message will be sent.</li>
+            <li>Triggers are case-insensitive.</li>
+            <li>{{NAME}}, {{Name}}, and {{name}} in the message will be replaced with the user's name.</li>
+            <li><code>*</code> will be treated as a wildcard.</li>
+            <li>Triggers are matched in order, if more than the max number are matched, later triggers will not be sent.</li>
+            <li>Change the maximum number of responses under settings.</li>
+        </ul>
     </section>
-    <div class="columns is-multiline messages-container" style="border-top: 1px solid #000"></div>
+
+    <div class="messages-container"></div>
 </div>

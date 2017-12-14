@@ -3,6 +3,31 @@ import { UIExtensionExports } from '@bhmb/ui'
 import { RemovableMessageHelper } from './listeners'
 import { MessageConfig } from './'
 
+declare function dragula(element: HTMLElement[], options: any): any
+
+function waitForGlobal(variable: string, url: string): Promise<void> {
+    return new Promise(resolve => {
+        const prev = document.querySelector(`script[src="${url}"]`)
+        if (!prev) {
+            const el = document.head.appendChild(document.createElement('script'))
+            el.src = url
+        }
+
+        const interval = setInterval(() => {
+            if (window && (window as any)[variable]) {
+                resolve()
+                clearInterval(interval)
+            }
+        })
+    })
+}
+
+
+function getElementWithClass(className: string, element?: HTMLElement | null): HTMLElement | undefined {
+    if (!element) return
+    return element.classList.contains(className) ? element : getElementWithClass(className, element.parentElement)
+}
+
 export abstract class MessagesTab<T> extends RemovableMessageHelper<T> {
     protected tab: HTMLDivElement
     protected ui: UIExtensionExports
@@ -18,10 +43,12 @@ export abstract class MessagesTab<T> extends RemovableMessageHelper<T> {
         super(id, ex)
         this.ui = ex.bot.getExports('ui') as UIExtensionExports
         this.ex = ex
-        this.tab = this.ui.addTab(name, 'messages')
+        this.tab = this.ui.addTab(name)
     }
 
-    setup = () => {
+    setup = async () => {
+        await waitForGlobal('dragula', 'https://cdnjs.cloudflare.com/ajax/libs/dragula/3.7.2/dragula.min.js')
+
         this.insertHTML()
         this.template = this.tab.querySelector('template') as HTMLTemplateElement
         this.root = this.tab.querySelector('.messages-container') as HTMLDivElement
@@ -30,33 +57,33 @@ export abstract class MessagesTab<T> extends RemovableMessageHelper<T> {
         this.tab.addEventListener('input', () => this.save())
         // Create a new message
         let button = this.tab.querySelector('.button.is-primary') as HTMLElement
-        button.addEventListener('click', () => {
-            this.addMessage()
-        })
+        button.addEventListener('click', () => this.addMessage())
         // Deleting messages
         this.tab.addEventListener('click', event => {
-            let target = event.target as HTMLElement
-            if (target.tagName == 'A' && target.textContent == 'Delete') {
+            const target = event.target as HTMLElement
+            if (target.matches('[data-do=delete]')) {
                 event.preventDefault()
 
-                this.ui.alert(
-                    'Really delete this message?',
-                    [{ text: 'Delete', style: 'is-danger' }, { text: 'Cancel' }],
-                    result => {
-                        if (result != 'Delete') return
-
-                        let parent = target
-                        while (!parent.classList.contains('column')) {
-                            parent = parent.parentElement as HTMLElement
-                        }
-                        parent.remove()
-                        this.save()
-                    }
-                )
+                // Todo: Undo
+                const row = getElementWithClass('box', target)
+                if (!row) return
+                row.remove()
+            }
+            this.save()
+        })
+        // Moving up / down
+        dragula([this.root], {
+            moves(_el: HTMLElement, _container: HTMLElement, handle: HTMLElement) {
+                return handle.classList.contains('drag')
             }
         })
+        .on('drop', () => this.save())
+        .on('drag', (el: HTMLElement) => {
+            const details = el.querySelector('details') as HTMLElement & { open: boolean } | null
+            if (details) details.open = false
+        })
 
-        this.ex.storage.get(this.id, [] as T[]).forEach(message => {
+        this.ex.storage.get<T[]>(this.id, []).forEach(message => {
             this.addMessage(message)
         })
     }
@@ -72,22 +99,20 @@ export abstract class MessagesTab<T> extends RemovableMessageHelper<T> {
     getMessages = (): { [key: string]: string | number }[] => {
         let messages: { [key: string]: string | number }[] = []
 
-        Array.from(this.root.children).forEach(element => {
+        this.root.querySelectorAll('.box').forEach(element => {
             let data: { [key: string]: string | number } = {}
-
-            Array.from(element.querySelectorAll('[data-target]')).forEach((input: HTMLElement) => {
+            element.querySelectorAll('[data-target]').forEach((input: HTMLInputElement) => {
                 let name = input.dataset['target']
                 if (!name) return
 
                 switch (input.getAttribute('type')) {
                     case 'number':
-                        data[name] = +(input as HTMLInputElement).value
+                        data[name] = +input.value
                         break
                     default:
-                        data[name] = (input as HTMLInputElement).value
+                        data[name] = input.value
                 }
             })
-
             messages.push(data)
         })
 
@@ -107,6 +132,7 @@ export class JoinTab extends MessagesTab<MessageConfig> {
 
     addMessage = (msg: Partial<MessageConfig> = {}) => {
         this.ui.buildTemplate(this.template, this.root, [
+            { selector: '[data-for=message-trim]', text: msg.message || '' },
             { selector: '[data-target=message]', text: msg.message || '' },
             { selector: '[data-target=joins_low]', value: msg.joins_low || 0 },
             { selector: '[data-target=joins_high]', value: msg.joins_high || 9999 },
@@ -128,6 +154,7 @@ export class LeaveTab extends MessagesTab<MessageConfig> {
 
     addMessage = (msg: Partial<MessageConfig> = {}) => {
         this.ui.buildTemplate(this.template, this.root, [
+            { selector: '[data-for=message-trim]', text: msg.message || '' },
             { selector: '[data-target=message]', text: msg.message || '' },
             { selector: '[data-target=joins_low]', value: msg.joins_low || 0 },
             { selector: '[data-target=joins_high]', value: msg.joins_high || 9999 },
