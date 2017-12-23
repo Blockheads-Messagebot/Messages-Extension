@@ -44,9 +44,6 @@ MessageBot.registerExtension('messages', function(ex, world) {
     if (ex.bot.getExports('ui')) {
         let style = document.head.appendChild(document.createElement('style'))
         style.innerHTML = css
-        let dragStyle = document.head.appendChild(document.createElement('link'))
-        dragStyle.rel = 'stylesheet'
-        dragStyle.href = 'https://cdnjs.cloudflare.com/ajax/libs/dragula/3.7.2/dragula.css'
 
         let ui = ex.bot.getExports('ui') as UIExtensionExports
         ui.addTabGroup('Messages', 'messages')
@@ -63,7 +60,6 @@ MessageBot.registerExtension('messages', function(ex, world) {
         listeners = listeners.concat(
             ...tabs,
             { remove: () => style.remove() },
-            { remove: () => dragStyle.remove() },
             { remove: () => ui.removeTabGroup('messages') },
         )
     }
