@@ -10,3 +10,5 @@ Configuration keys (stored in the extension storage object)
 | `disableWhitespaceTrimming` | If the trigger should be trimmed before testing. | `false` |
 | `regexTriggers` | If triggers should be parsed as regex. | `false` |
 | `announcementDelay` | The delay between sending announcements. | `10` |
+
+Note: This package must be included in a module bundler to work correctly in the browser. 
