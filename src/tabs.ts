@@ -3,24 +3,8 @@ import { UIExtensionExports } from '@bhmb/ui'
 import { RemovableMessageHelper } from './listeners'
 import { MessageConfig } from './'
 
-declare function dragula(element: HTMLElement[], options: any): any
-
-function waitForGlobal(variable: string, url: string): Promise<void> {
-    return new Promise(resolve => {
-        const prev = document.querySelector(`script[src="${url}"]`)
-        if (!prev) {
-            const el = document.head.appendChild(document.createElement('script'))
-            el.src = url
-        }
-
-        const interval = setInterval(() => {
-            if (window && (window as any)[variable]) {
-                resolve()
-                clearInterval(interval)
-            }
-        })
-    })
-}
+declare function require(path: string): any
+const dragula = require('dragula') as (element: HTMLElement[], options: any) => any
 
 
 function getElementWithClass(className: string, element?: HTMLElement | null): HTMLElement | undefined {
@@ -47,8 +31,6 @@ export abstract class MessagesTab<T> extends RemovableMessageHelper<T> {
     }
 
     setup = async () => {
-        await waitForGlobal('dragula', 'https://cdnjs.cloudflare.com/ajax/libs/dragula/3.7.2/dragula.min.js')
-
         this.insertHTML()
         this.template = this.tab.querySelector('template') as HTMLTemplateElement
         this.root = this.tab.querySelector('.messages-container') as HTMLDivElement

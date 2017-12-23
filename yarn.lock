@@ -2,15 +2,15 @@
 # yarn lockfile v1
 
 
-"@bhmb/bot@^7.0.9":
-  version "7.0.9"
-  resolved "https://registry.yarnpkg.com/@bhmb/bot/-/bot-7.0.9.tgz#7cdaa476d0cbd93f90edde58b91607a3762d603f"
+"@bhmb/bot@^7.0.10":
+  version "7.0.10"
+  resolved "https://registry.yarnpkg.com/@bhmb/bot/-/bot-7.0.10.tgz#24057f4feb4e621a3bc35006cba54cf5fb3ca671"
   dependencies:
     blockheads-api-interface "^0.0.1"
 
-"@bhmb/ui@^1.0.6":
-  version "1.0.6"
-  resolved "https://registry.yarnpkg.com/@bhmb/ui/-/ui-1.0.6.tgz#fc135129df2ecfc1fb7b608ae9ec1f04212ee45c"
+"@bhmb/ui@^1.0.7":
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/@bhmb/ui/-/ui-1.0.7.tgz#8ccd75e9bda26f6456448563a490e473c70d72ed"
 
 ansi-regex@^2.0.0:
   version "2.1.1"
@@ -39,6 +39,10 @@ arr-flatten@^1.0.1:
 array-unique@^0.2.1:
   version "0.2.1"
   resolved "https://registry.yarnpkg.com/array-unique/-/array-unique-0.2.1.tgz#a1d97ccafcbc2625cc70fadceb36a50c58b01a53"
+
+atoa@1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/atoa/-/atoa-1.0.0.tgz#0cc0e91a480e738f923ebc103676471779b34a49"
 
 babel-code-frame@^6.22.0:
   version "6.26.0"
@@ -111,9 +115,33 @@ concat-map@0.0.1:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/concat-map/-/concat-map-0.0.1.tgz#d8a96bd77fd68df7793a73036a3ba0d5405d477b"
 
+contra@1.9.4:
+  version "1.9.4"
+  resolved "https://registry.yarnpkg.com/contra/-/contra-1.9.4.tgz#f53bde42d7e5b5985cae4d99a8d610526de8f28d"
+  dependencies:
+    atoa "1.0.0"
+    ticky "1.0.1"
+
+crossvent@1.5.4:
+  version "1.5.4"
+  resolved "https://registry.yarnpkg.com/crossvent/-/crossvent-1.5.4.tgz#da2c4f8f40c94782517bf2beec1044148194ab92"
+  dependencies:
+    custom-event "1.0.0"
+
+custom-event@1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/custom-event/-/custom-event-1.0.0.tgz#2e4628be19dc4b214b5c02630c5971e811618062"
+
 diff@^3.2.0:
   version "3.4.0"
   resolved "https://registry.yarnpkg.com/diff/-/diff-3.4.0.tgz#b1d85507daf3964828de54b37d0d73ba67dda56c"
+
+dragula@^3.7.2:
+  version "3.7.2"
+  resolved "https://registry.yarnpkg.com/dragula/-/dragula-3.7.2.tgz#4a35c9d3981ffac1a949c29ca7285058e87393ce"
+  dependencies:
+    contra "1.9.4"
+    crossvent "1.5.4"
 
 escape-string-regexp@^1.0.2, escape-string-regexp@^1.0.5:
   version "1.0.5"
@@ -421,9 +449,9 @@ rollup-plugin-string@^2.0.2:
   dependencies:
     rollup-pluginutils "^1.5.0"
 
-rollup-plugin-typescript2@^0.8.4:
-  version "0.8.4"
-  resolved "https://registry.yarnpkg.com/rollup-plugin-typescript2/-/rollup-plugin-typescript2-0.8.4.tgz#46b51cb15b4fb24a0b1c49e08f03253462c9b163"
+rollup-plugin-typescript2@^0.9.0:
+  version "0.9.0"
+  resolved "https://registry.yarnpkg.com/rollup-plugin-typescript2/-/rollup-plugin-typescript2-0.9.0.tgz#d3fe826e17bb72734d0d23aa6ff62a65cc482666"
   dependencies:
     fs-extra "^4.0.2"
     resolve "^1.5.0"
@@ -444,9 +472,9 @@ rollup-pluginutils@^2.0.1:
     estree-walker "^0.3.0"
     micromatch "^2.3.11"
 
-rollup@^0.52.1:
-  version "0.52.1"
-  resolved "https://registry.yarnpkg.com/rollup/-/rollup-0.52.1.tgz#610e8e1be432f18fcfbfa865408a1cd7618cd707"
+rollup@^0.52.3:
+  version "0.52.3"
+  resolved "https://registry.yarnpkg.com/rollup/-/rollup-0.52.3.tgz#020d99fffe9619351e47b3894fd397c26f5e1bf6"
 
 semver@^5.3.0:
   version "5.4.1"
@@ -467,6 +495,10 @@ supports-color@^4.0.0:
   resolved "https://registry.yarnpkg.com/supports-color/-/supports-color-4.5.0.tgz#be7a0de484dec5c5cddf8b3d59125044912f635b"
   dependencies:
     has-flag "^2.0.0"
+
+ticky@1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/ticky/-/ticky-1.0.1.tgz#b7cfa71e768f1c9000c497b9151b30947c50e46d"
 
 tslib@^1.7.1:
   version "1.7.1"
