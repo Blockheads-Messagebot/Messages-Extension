@@ -3,9 +3,7 @@ import { UIExtensionExports } from '@bhmb/ui'
 import { RemovableMessageHelper } from './listeners'
 import { MessageConfig } from './'
 
-declare function require(path: string): any
-const dragula = require('dragula') as (element: HTMLElement[], options: any) => any
-
+import dragula from 'dragula'
 
 function getElementWithClass(className: string, element?: HTMLElement | null): HTMLElement | undefined {
     if (!element) return
@@ -54,13 +52,13 @@ export abstract class MessagesTab<T> extends RemovableMessageHelper<T> {
             this.save()
         })
         // Moving up / down
-        dragula([this.root], {
+        const dragger = dragula([this.root], {
             moves(_el: HTMLElement, _container: HTMLElement, handle: HTMLElement) {
                 return handle.classList.contains('drag')
             }
         })
-        .on('drop', () => this.save())
-        .on('drag', (el: HTMLElement) => {
+        dragger.on('drop', () => this.save())
+        dragger.on('drag', (el: HTMLElement) => {
             const details = el.querySelector('details') as HTMLElement & { open: boolean } | null
             if (details) details.open = false
         })
