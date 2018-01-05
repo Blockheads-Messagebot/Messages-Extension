@@ -110,8 +110,8 @@ export class AnnouncementListener extends RemovableMessageHelper<{ message: stri
         if (!this.ex.world.online.length) {
             this.index = 0
         } else {
-            const { message } = this.messages[this.index]
-            if (message) this.ex.bot.send(message)
+            const data = this.messages[this.index]
+            if (data && data.message) this.ex.bot.send(data.message)
         }
 
         this.timeoutId = setTimeout(this.run, this.delay)
