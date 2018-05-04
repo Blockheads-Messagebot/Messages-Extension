@@ -7,15 +7,15 @@
   "author": "Bibliofile <Bibliofilegit@gmail.com>",
   "license": "GPL-3.0+",
   "devDependencies": {
-    "@bhmb/bot": "^7.0.10",
-    "@bhmb/ui": "^1.0.7",
-    "rollup": "^0.53.0",
-    "rollup-plugin-commonjs": "^8.2.6",
-    "rollup-plugin-node-resolve": "^3.0.0",
+    "@bhmb/bot": "^7.0.11",
+    "@bhmb/ui": "^1.0.8",
+    "rollup": "^0.58.2",
+    "rollup-plugin-commonjs": "^9.1.3",
+    "rollup-plugin-node-resolve": "^3.3.0",
     "rollup-plugin-string": "^2.0.2",
-    "rollup-plugin-typescript2": "^0.9.0",
-    "tslint": "^5.8.0",
-    "typescript": "^2.6.2"
+    "rollup-plugin-typescript2": "^0.13.0",
+    "tslint": "^5.10.0",
+    "typescript": "^2.8.3"
   },
   "scripts": {
     "build": "rollup --config",

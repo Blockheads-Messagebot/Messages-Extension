@@ -8,6 +8,9 @@ export default {
     output: {
         file: 'index.js',
         format: 'es',
+        globals: {
+            '@bhmb/bot': '@bhmb/bot'
+        }
     },
     plugins: [
         resolve(),
@@ -18,7 +21,4 @@ export default {
     external: [
         '@bhmb/bot'
     ],
-    globals: {
-        '@bhmb/bot': '@bhmb/bot'
-    }
 }

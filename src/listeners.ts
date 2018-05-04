@@ -93,7 +93,7 @@ export class TriggerListener extends RemovableMessageHelper<MessageConfig & { tr
 }
 
 export class AnnouncementListener extends RemovableMessageHelper<{ message: string }> {
-    private timeoutId: number
+    private timeoutId: number | NodeJS.Timer
     private index = 0
 
     get delay() {
@@ -118,6 +118,7 @@ export class AnnouncementListener extends RemovableMessageHelper<{ message: stri
     }
 
     remove() {
-        clearTimeout(this.timeoutId)
+        // This will also work with Timer, but Typescript doesn't know that.
+        clearTimeout(this.timeoutId as number)
     }
 }

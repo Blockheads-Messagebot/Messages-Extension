@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-        "target": "es6",
+        "target": "es2015",
         "lib": [
             "dom",
             "es7",
@@ -8,7 +8,7 @@
             "scripthost"
         ],
         "moduleResolution": "node",
-        "module": "commonjs",
+        "module": "es2015",
         "removeComments": false,
         "noImplicitAny": true,
         "strictNullChecks": true,
