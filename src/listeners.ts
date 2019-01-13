@@ -110,7 +110,7 @@ export class AnnouncementListener extends RemovableMessageHelper<{ message: stri
         if (!this.ex.world.online.length) {
             this.index = 0
         } else {
-            const data = this.messages[this.index]
+            const data = this.messages[this.index++]
             if (data && data.message) this.ex.bot.send(data.message)
         }
 
