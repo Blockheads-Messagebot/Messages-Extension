@@ -24,8 +24,8 @@ export abstract class RemovableMessageHelper<T> {
 
     addCooldown(player: Player, type: 'rejoin' | 'trigger'): void {
         const cd = cooldowns.get(this.ex)![type]
-        cd.push({ name: player.name, time: Date.now() })
-        cd.splice(0, cd.length - 32) // Probably overkill, keep last 32 triggers
+        cd.unshift({ name: player.name, time: Date.now() })
+        cd.length = Math.min(32, cd.length)
     }
 
     abstract remove(): void
