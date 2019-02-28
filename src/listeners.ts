@@ -3,10 +3,23 @@ import { MessageConfig } from './'
 import { checkJoins, checkGroups } from './helpers'
 
 export abstract class RemovableMessageHelper<T> {
+    private cooldowns: { name: string, time: number }[] = []
+
     constructor(protected id: string, protected ex: MessageBotExtension) { }
 
     get messages() {
         return this.ex.storage.get<T[]>(this.id, [])
+    }
+
+    onCooldown(player: Player, key: string, fallback: number): boolean {
+        const cd = this.cooldowns.find(cd => cd.name === player.name)
+        if (!cd) return false
+        return cd.time + this.ex.storage.get(key, fallback) * 1000 > Date.now()
+    }
+
+    addCooldown(player: Player): void {
+        this.cooldowns.push({ name: player.name, time: Date.now() })
+        this.cooldowns.splice(0, this.cooldowns.length - 32) // Probably overkill, keep last 32 triggers
     }
 
     abstract remove(): void
@@ -23,6 +36,9 @@ export class JoinListener extends RemovableMessageHelper<MessageConfig> {
     }
 
     listener = (player: Player) => {
+        if (this.onCooldown(player, 'disableJoinDelay', 30)) return
+        this.addCooldown(player)
+
         for (let msg of this.messages) {
             if (checkJoins(player, msg) && checkGroups(player, msg)) {
                 this.ex.bot.send(msg.message, { name: player.name })
@@ -42,6 +58,9 @@ export class LeaveListener extends RemovableMessageHelper<MessageConfig> {
     }
 
     listener = (player: Player) => {
+        if (this.onCooldown(player, 'disableLeaveDelay', 30)) return
+        this.addCooldown(player)
+
         for (let msg of this.messages) {
             if (checkJoins(player, msg) && checkGroups(player, msg)) {
                 this.ex.bot.send(msg.message, { name: player.name })
@@ -62,6 +81,8 @@ export class TriggerListener extends RemovableMessageHelper<MessageConfig & { tr
 
     listener = ({ player, message }: { player: Player, message: string }) => {
         if (player.name == 'SERVER') return
+        if (this.onCooldown(player, 'disableTriggerDelay', 10)) return
+
         let responses = 0
         for (let msg of this.messages) {
             let checks = [
@@ -70,6 +91,7 @@ export class TriggerListener extends RemovableMessageHelper<MessageConfig & { tr
                 this.triggerMatches(message, msg.trigger)
             ]
             if (checks.every(Boolean) && ++responses <= this.ex.storage.get('maxResponses', 3)) {
+                this.addCooldown(player)
                 this.ex.bot.send(msg.message, { name: player.name })
             }
         }
