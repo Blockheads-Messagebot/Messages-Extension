@@ -2,24 +2,30 @@ import { MessageBotExtension, Player } from '@bhmb/bot'
 import { MessageConfig } from './'
 import { checkJoins, checkGroups } from './helpers'
 
-export abstract class RemovableMessageHelper<T> {
-    private cooldowns: { name: string, time: number }[] = []
+const cooldowns = new WeakMap<MessageBotExtension, {
+    rejoin: { name: string, time: number }[],
+    trigger: { name: string, time: number }[]
+}>()
 
-    constructor(protected id: string, protected ex: MessageBotExtension) { }
+export abstract class RemovableMessageHelper<T> {
+    constructor(protected id: string, protected ex: MessageBotExtension) {
+        if (!cooldowns.has(ex)) cooldowns.set(ex, { rejoin: [], trigger: [] })
+    }
 
     get messages() {
         return this.ex.storage.get<T[]>(this.id, [])
     }
 
-    onCooldown(player: Player, key: string, fallback: number): boolean {
-        const cd = this.cooldowns.find(cd => cd.name === player.name)
+    onCooldown(player: Player, type: 'rejoin' | 'trigger', key: string, fallback: number): boolean {
+        const cd = cooldowns.get(this.ex)![type].find(cd => cd.name === player.name)
         if (!cd) return false
         return cd.time + this.ex.storage.get(key, fallback) * 1000 > Date.now()
     }
 
-    addCooldown(player: Player): void {
-        this.cooldowns.push({ name: player.name, time: Date.now() })
-        this.cooldowns.splice(0, this.cooldowns.length - 32) // Probably overkill, keep last 32 triggers
+    addCooldown(player: Player, type: 'rejoin' | 'trigger'): void {
+        const cd = cooldowns.get(this.ex)![type]
+        cd.push({ name: player.name, time: Date.now() })
+        cd.splice(0, cd.length - 32) // Probably overkill, keep last 32 triggers
     }
 
     abstract remove(): void
@@ -36,8 +42,8 @@ export class JoinListener extends RemovableMessageHelper<MessageConfig> {
     }
 
     listener = (player: Player) => {
-        if (this.onCooldown(player, 'disableJoinDelay', 30)) return
-        this.addCooldown(player)
+        if (this.onCooldown(player, 'rejoin', 'rejoinCooldown', 30)) return
+        this.addCooldown(player, 'rejoin')
 
         for (let msg of this.messages) {
             if (checkJoins(player, msg) && checkGroups(player, msg)) {
@@ -58,8 +64,8 @@ export class LeaveListener extends RemovableMessageHelper<MessageConfig> {
     }
 
     listener = (player: Player) => {
-        if (this.onCooldown(player, 'disableLeaveDelay', 30)) return
-        this.addCooldown(player)
+        if (this.onCooldown(player, 'rejoin', 'rejoinCooldown', 30)) return
+        this.addCooldown(player, 'rejoin')
 
         for (let msg of this.messages) {
             if (checkJoins(player, msg) && checkGroups(player, msg)) {
@@ -81,7 +87,7 @@ export class TriggerListener extends RemovableMessageHelper<MessageConfig & { tr
 
     listener = ({ player, message }: { player: Player, message: string }) => {
         if (player.name == 'SERVER') return
-        if (this.onCooldown(player, 'disableTriggerDelay', 10)) return
+        if (this.onCooldown(player, 'trigger', 'triggerCooldown', 10)) return
 
         let responses = 0
         for (let msg of this.messages) {
@@ -91,7 +97,7 @@ export class TriggerListener extends RemovableMessageHelper<MessageConfig & { tr
                 this.triggerMatches(message, msg.trigger)
             ]
             if (checks.every(Boolean) && ++responses <= this.ex.storage.get('maxResponses', 3)) {
-                this.addCooldown(player)
+                this.addCooldown(player, 'trigger')
                 this.ex.bot.send(msg.message, { name: player.name })
             }
         }
