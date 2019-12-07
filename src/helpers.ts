@@ -6,7 +6,7 @@ export function checkJoins(player: Player, message: MessageConfig) {
 }
 
 export function checkGroups(player: Player, message: MessageConfig): boolean {
-    return isInGroup(player, message.group) && !isInGroup(player, message.not_group)
+    return isInGroup(player, message.group) && !isInGroup(player, message.not_group) && !player.isBanned
 }
 
 function isInGroup(player: Player, group: MessageGroupType): boolean {
